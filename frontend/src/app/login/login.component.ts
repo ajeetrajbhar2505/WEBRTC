@@ -15,7 +15,4 @@ export class LoginComponent implements OnInit {
    
   }
 
-  sendHello(): void {
-    this.globalService.notificationSubject.next('hello');
-  }
 }
