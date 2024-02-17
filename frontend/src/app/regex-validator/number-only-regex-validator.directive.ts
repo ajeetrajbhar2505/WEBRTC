@@ -20,7 +20,7 @@ export class NumberOnlyRegexValidatorDirective {
       this.ngControl.control.setErrors(null); 
       this.ngControl.valueAccessor.writeValue(trimmedValue);
     } else {
-      this.ngControl.control.setErrors({ 'mobileInvalid': true });
+      this.ngControl.control.setErrors({ 'numberOnlyInvalid': true });
       this.ngControl.valueAccessor.writeValue(trimmedValue);
     }
   }
