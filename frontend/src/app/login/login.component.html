@@ -1,14 +1,7 @@
 <div [formGroup]="loginFrom">
-    <!-- Added email validator -->
     <input type="text" emailRegexValidator formControlName="email">
-    
-    <!-- Added mobile number validator and set maxLength -->
     <input type="number" mobileRegexValidator [maxLength]="10" formControlName="mobile">
-    
-    <!-- Added pincode validator and set maxLength -->
     <input type="number" numberOnlyRegexValidator [maxLength]="6" formControlName="pincode">
-    
-    <!-- Added multi-space restriction validator -->
     <input type="text" restrictMultiSpaceRegexValidator formControlName="father">
     
     <!-- Updated error checks to match the new validator names -->
