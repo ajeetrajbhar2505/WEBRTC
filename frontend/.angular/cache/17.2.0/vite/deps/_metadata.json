@@ -1,34 +1,61 @@
 {
-  "hash": "9dc182e2",
-  "configHash": "841ac948",
+  "hash": "b5664d9a",
+  "configHash": "7919590a",
   "lockfileHash": "67d97e4b",
-  "browserHash": "3a41b2b9",
+  "browserHash": "1a54e706",
   "optimized": {
     "@angular/core": {
       "src": "../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "6022b248",
+      "fileHash": "e8639d4c",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "03b2890e",
+      "fileHash": "46da9e27",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "7bc4d3af",
+      "fileHash": "bda6d1ae",
+      "needsInterop": false
+    },
+    "@angular/common/http": {
+      "src": "../../../../../node_modules/@angular/common/fesm2022/http.mjs",
+      "file": "@angular_common_http.js",
+      "fileHash": "497bb717",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "d38faa2a",
+      "needsInterop": false
+    },
+    "@angular/forms": {
+      "src": "../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
+      "file": "@angular_forms.js",
+      "fileHash": "c4d221ef",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-7JCZLXCD": {
-      "file": "chunk-7JCZLXCD.js"
+    "chunk-OBCOJ2GY": {
+      "file": "chunk-OBCOJ2GY.js"
     },
-    "chunk-ALH4AY2H": {
-      "file": "chunk-ALH4AY2H.js"
+    "chunk-ROIHYS4E": {
+      "file": "chunk-ROIHYS4E.js"
+    },
+    "chunk-GWHF4ZXO": {
+      "file": "chunk-GWHF4ZXO.js"
+    },
+    "chunk-MZ4YLI6P": {
+      "file": "chunk-MZ4YLI6P.js"
+    },
+    "chunk-SXIXOCJ4": {
+      "file": "chunk-SXIXOCJ4.js"
     }
   }
 }
