@@ -21,7 +21,9 @@ export class LoginComponent implements OnInit {
       email : ['',Validators.required],
       mobile : ['',Validators.required],
       pincode : ['',Validators.required],
+      father : ['',Validators.required],
     })
   }
+  
 
 }

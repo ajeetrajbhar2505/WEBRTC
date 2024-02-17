@@ -2,5 +2,9 @@
     <input type="text" emailRegexValidator formControlName="email">
     <input type="number" mobileRegexValidator [maxLength]="12" formControlName="mobile">
     <input type="number" numberOnlyRegexValidator [maxLength]="6" formControlName="pincode">
-    <input type="text" restrictMultiSpaceRegexValidator formControlName="pincode">
+    <input type="text" restrictMultiSpaceRegexValidator formControlName="father">
+    <p>{{loginFrom.get('email').errors | json}}</p>
+    <p>{{loginFrom.get('mobile').errors | json}}</p>
+    <p>{{loginFrom.get('pincode').errors | json}}</p>
+    <p>{{loginFrom.get('father').errors | json}}</p>
 </div>
