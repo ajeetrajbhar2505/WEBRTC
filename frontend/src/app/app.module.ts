@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmailRegexValidatorDirective } from './regex-validator/email-regex-validator.directive';
 import { MobileRegexValidatorDirective } from './regex-validator/mobile-regex-validator.directive';
 import { NumberOnlyRegexValidatorDirective } from './regex-validator/number-only-regex-validator.directive';
+import { RestrictMultiSpaceRegexValidatorDirective } from './regex-validator/restrict-multi-space-regex-validator.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NumberOnlyRegexValidatorDirective } from './regex-validator/number-only
     WebrtcComponent,
     EmailRegexValidatorDirective,
     MobileRegexValidatorDirective,
-    NumberOnlyRegexValidatorDirective
+    NumberOnlyRegexValidatorDirective,
+    RestrictMultiSpaceRegexValidatorDirective
   ],
   imports: [
     BrowserModule,
