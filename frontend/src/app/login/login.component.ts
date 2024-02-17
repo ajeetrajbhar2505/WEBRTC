@@ -24,6 +24,12 @@ export class LoginComponent implements OnInit {
       father : ['',Validators.required],
     })
   }
+
+  login(){
+    this.globalService.getData('api').subscribe(data=>{
+      console.log(data);
+    })
+  }
   
 
 }

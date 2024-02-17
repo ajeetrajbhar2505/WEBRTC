@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const routes = require('./routes/index.js')
 const dotenv = require('dotenv');
 dotenv.config();
 app.use(express.json())
+app.use(cors())
 app.use('/api', routes)
 
 const httpServer = require('http').createServer(app)

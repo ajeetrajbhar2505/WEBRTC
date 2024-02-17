@@ -9,4 +9,5 @@
     <p *ngIf="loginFrom.get('mobile').touched && loginFrom.get('mobile').errors?.['mobileInvalid']">Invalid mobile number</p>
     <p *ngIf="loginFrom.get('pincode').touched && loginFrom.get('pincode').errors?.['numberOnlyInvalid']">Invalid pincode</p>
     <p *ngIf="loginFrom.get('father').touched && loginFrom.get('father').errors?.['restrictMultiSpaceInvalid']">No consecutive spaces allowed</p>
+    <button (click)="login()">login</button>
 </div>
