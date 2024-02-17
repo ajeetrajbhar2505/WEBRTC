@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,12 +8,20 @@ import { GlobalService } from '../global.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  
-  constructor(private globalService: GlobalService) {
+  loginFrom:FormGroup
+  constructor(private globalService: GlobalService,private formBuilder:FormBuilder) {
   }
 
   ngOnInit(): void {
-   
+   this.InitializeForm()
+  }
+
+  InitializeForm(){
+    this.loginFrom = this.formBuilder.group({
+      email : ['',Validators.required],
+      mobile : ['',Validators.required],
+      pincode : ['',Validators.required],
+    })
   }
 
 }

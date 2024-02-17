@@ -1,1 +1,5 @@
-<button (click)="sendHello()">subjext</button>
+<div [formGroup]="loginFrom">
+    <input type="text" emailRegexValidator formControlName="email">
+    <input type="number" mobileRegexValidator [maxLength]="10" formControlName="mobile">
+    <input type="number" numberOnlyRegexValidator [maxLength]="6" formControlName="pincode">
+</div>

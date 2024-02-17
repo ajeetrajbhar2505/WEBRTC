@@ -1,16 +1,27 @@
-import { Directive, HostListener } from '@angular/core';
+import { Attribute, Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[numberOnlyRegexValidator]'
 })
 export class NumberOnlyRegexValidatorDirective {
+  @Input() maxLength: number;
 
-  constructor(private ngControl: NgControl) { }
+  constructor(private ngControl: NgControl,@Attribute('maxlength') maxLength: string) { 
+    this.maxLength = parseInt(maxLength, 10);
+  }
 
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
-    const newValue = value.replace(/[^0-9]/g, ''); // Replace any character that is not a digit with an empty string
-    this.ngControl.valueAccessor.writeValue(newValue); // Update the input value with the sanitized value
+    const trimmedValue = value.slice(0, this.maxLength);
+    const regex = new RegExp(`^[0-9]{1,${this.maxLength}}$`);
+    if (regex.test(trimmedValue)) {
+      this.ngControl.control.setErrors(null); 
+      this.ngControl.valueAccessor.writeValue(trimmedValue);
+    } else {
+      this.ngControl.control.setErrors({ 'numberOnlyInvalid': true });
+      this.ngControl.valueAccessor.writeValue(this.ngControl.value);
+    }
   }
+
 }
