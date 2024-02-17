@@ -13,15 +13,17 @@ export class NumberOnlyRegexValidatorDirective {
 
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
-    const trimmedValue = value.slice(0, this.maxLength);
-    const regex = new RegExp(`^[0-9]{1,${this.maxLength}}$`);
-    if (regex.test(trimmedValue)) {
+    const maxLength = (this.maxLength); 
+    const trimmedValue = value.slice(0, maxLength);
+    const regex = new RegExp(`^[0-9]{1,${maxLength}}$`);
+    if (regex.test(trimmedValue) && trimmedValue.length === maxLength) { 
       this.ngControl.control.setErrors(null); 
       this.ngControl.valueAccessor.writeValue(trimmedValue);
     } else {
-      this.ngControl.control.setErrors({ 'numberOnlyInvalid': true });
-      this.ngControl.valueAccessor.writeValue(this.ngControl.value);
+      this.ngControl.control.setErrors({ 'mobileInvalid': true });
+      this.ngControl.valueAccessor.writeValue(trimmedValue);
     }
   }
+  
 
 }
