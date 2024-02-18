@@ -1,13 +1,7 @@
-<div [formGroup]="loginFrom">
-    <input type="text" emailRegexValidator formControlName="email">
-    <input type="number" mobileRegexValidator [maxLength]="10" formControlName="mobile">
-    <input type="number" numberOnlyRegexValidator [maxLength]="6" formControlName="pincode">
-    <input type="text" restrictMultiSpaceRegexValidator formControlName="father">
-    
-    <!-- Updated error checks to match the new validator names -->
-    <p *ngIf="loginFrom.get('email').touched && loginFrom.get('email').errors?.['emailInvalid']">Invalid email format</p>
-    <p *ngIf="loginFrom.get('mobile').touched && loginFrom.get('mobile').errors?.['mobileInvalid']">Invalid mobile number</p>
-    <p *ngIf="loginFrom.get('pincode').touched && loginFrom.get('pincode').errors?.['numberOnlyInvalid']">Invalid pincode</p>
-    <p *ngIf="loginFrom.get('father').touched && loginFrom.get('father').errors?.['restrictMultiSpaceInvalid']">No consecutive spaces allowed</p>
-    <button (click)="login()">login</button>
-</div>
+<div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <div class="d-flex flex-column mb-3">
+      <video #remoteVideo controls autoplay></video>
+      <button class="btn btn-primary m-3" (click)="makeCall()">Init call</button>
+    </div>
+    <br>
+  </div>

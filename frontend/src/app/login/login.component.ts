@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GlobalService } from '../global.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CallService } from '../call.service';
+import { SignalingService } from '../signaling.service';
 
 @Component({
   selector: 'app-login',
@@ -8,28 +9,38 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  loginFrom:FormGroup
-  constructor(private globalService: GlobalService,private formBuilder:FormBuilder) {
-  }
+  @ViewChild('remoteVideo') remoteVideo: ElementRef;
+
+  constructor(
+    private callService: CallService,
+    private signalingService: SignalingService
+  ) {}
 
   ngOnInit(): void {
-   this.InitializeForm()
+    this.signalingService.getMessages().subscribe((payload) => this._handleMessage(payload));
   }
 
-  InitializeForm(){
-    this.loginFrom = this.formBuilder.group({
-      email : ['',Validators.required],
-      mobile : ['',Validators.required],
-      pincode : ['',Validators.required],
-      father : ['',Validators.required],
-    })
+  public async makeCall(): Promise<void> {
+    await this.callService.makeCall(this.remoteVideo);
   }
 
-  login(){
-    this.globalService.getData('api').subscribe(data=>{
-      console.log(data);
-    })
-  }
-  
+  private async _handleMessage(data): Promise<void> {
+    
+    switch (data.type) {
+      case 'offer':
+        await this.callService.handleOffer(data.offer, this.remoteVideo);
+        break;
 
+      case 'answer':
+        await this.callService.handleAnswer(data.answer);
+        break;
+
+      case 'candidate':
+        this.callService.handleCandidate(data.candidate);
+        break;
+
+      default:
+        break;
+    }
+  }
 }
