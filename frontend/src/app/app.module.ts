@@ -13,8 +13,6 @@ import { EmailRegexValidatorDirective } from './regex-validator/email-regex-vali
 import { MobileRegexValidatorDirective } from './regex-validator/mobile-regex-validator.directive';
 import { NumberOnlyRegexValidatorDirective } from './regex-validator/number-only-regex-validator.directive';
 import { RestrictMultiSpaceRegexValidatorDirective } from './regex-validator/restrict-multi-space-regex-validator.directive';
-import { CallService } from './call.service';
-import { SignalingService } from './signaling.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +31,7 @@ import { SignalingService } from './signaling.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [GlobalService,CallService,SignalingService, provideHttpClient(withInterceptors([tokenInterceptor]))],
+  providers: [GlobalService, provideHttpClient(withInterceptors([tokenInterceptor]))],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
