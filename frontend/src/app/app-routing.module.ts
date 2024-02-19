@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { WebrtcComponent } from './webrtc/webrtc.component';
 import { authGuard } from './auth.guard';
@@ -7,7 +7,7 @@ import { authGuard } from './auth.guard';
 const routes: Routes = [
   { 
     path: '', 
-    redirectTo: 'login', 
+    redirectTo: 'webrtc', 
     pathMatch: 'full' 
   },
   { 
@@ -15,15 +15,15 @@ const routes: Routes = [
     component: LoginComponent, 
   },
   { 
-    path: 'home', 
+    path: 'webrtc', 
     component: WebrtcComponent,
-    canActivate : [authGuard]
+    canActivate : []
   },
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules,useHash : true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
