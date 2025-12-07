@@ -1,23 +1,127 @@
-<div class="container-fluid main-container-width-with-header" style="margin-top: 62px">
-    <h3>LP - Support & Collaboration</h3>
-    <div class="row">
-      <div class="col-md-6">
-        <h5>List of Users</h5>
+<div class="webrtc-wrapper">
+
+  <!-- HEADER -->
+  <header class="vc-header" *ngIf="!isConnected && !incomingCall && !isRinging">
+    <h2>Video Call</h2>
+    <p class="self-id">Your ID: <strong>{{ peerId || 'Loading...' }}</strong></p>
+  </header>
+
+<!-- INCOMING CALL -->
+<div class="incoming-call-screen" *ngIf="incomingCall">
+
+  <div class="incoming-box">
+
+    <div class="caller-img">
+      <i class="fa-solid fa-user fa-3x"></i>
+    </div>
+
+    <h3 class="incoming-title">Incoming Video Call</h3>
+    <p class="incoming-id">{{ incomingCallPeerId }}</p>
+
+    <div class="incoming-actions">
+      <button class="incoming-btn decline" (click)="declineCall()">
+        <i class="fa-solid fa-phone-slash"></i>
+      </button>
+
+      <button class="incoming-btn accept" (click)="acceptCall()">
+        <i class="fa-solid fa-phone"></i>
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <!-- CALL ENDED POPUP -->
+  <div class="call-ended-modal" *ngIf="showCallEndedModal">
+    <div class="modal-box">
+      <div class="end-icon">
+        <i class="fa-solid fa-phone-slash fa-2x"></i>
       </div>
-      <div class="col-md-6">
-        <h5>Connect with Peer</h5>
-  
-        <!-- Video & screen share container -->
-        <span>PeerId: {{peerId}}</span>
-        <div style="width: 400px; height: 300px; border: 2px solid" id="local-video"></div>
-        <div style="width: 400px; height: 300px; border: 2px solid" id="remote-video"></div>
-  
-        <br>
-        <div style="margin-top: 20px;">
-          <input type="text" placeholder="Peer Id" [(ngModel)]='peerIdShare'/>
-          <button class="button" (click)="connectWithPeer()">Call Peer</button>
-          <button class="button" (click)="screenShare()">Screen share</button>
-        </div>
-      </div>
+      <p>{{ callEndedMessage }}</p>
+      <button class="btn ok" (click)="closeCallEndedModal()">OK</button>
     </div>
   </div>
+
+  <!-- MAIN VIDEO UI -->
+  <div class="video-ui" [class.blur]="incomingCall">
+
+    <!-- REMOTE VIDEO -->
+    <div class="video-remote" [class.zoomed]="isVideoZoomed" (click)="toggleVideoZoom()">
+      <video id="remote-video" autoplay playsinline></video>
+
+      <div class="remote-status" *ngIf="isConnected">
+        <span>{{ peerIdShare }}</span>
+        <small>Connected</small>
+      </div>
+
+      <!-- WAITING / CALLING -->
+      <div class="waiting-state" *ngIf="!isConnected">
+        <div *ngIf="isRinging && !incomingCall" class="calling">
+          <div class="dots">
+            <span></span><span></span><span></span>
+          </div>
+          <p>Calling…</p>
+        </div>
+
+        <p *ngIf="!isRinging && !isCalling" class="ready-text">Ready to Call</p>
+      </div>
+    </div>
+
+    <!-- LOCAL VIDEO -->
+    <div 
+      class="video-local" 
+      [class.min]="isVideoZoomed"
+      [class.hide]="!localVideoEnabled"
+      (click)="!isVideoZoomed && toggleVideoZoom()">
+
+      <video id="local-video" autoplay muted playsinline></video>
+      <span class="local-tag">You</span>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls" *ngIf="isConnected || isRinging">
+      
+      <button class="ctrl" (click)="toggleAudio()">
+        <i class="fa" [ngClass]="audioEnabled ? 'fa-microphone' : 'fa-microphone-slash'"></i>
+      </button>
+
+      <button class="ctrl" *ngIf="isConnected" (click)="toggleVideo()">
+        <i class="fa" [ngClass]="localVideoEnabled ? 'fa-video' : 'fa-video-slash'"></i>
+      </button>
+
+      <button class="ctrl" *ngIf="isConnected" (click)="flipCamera()">
+        <i class="fa-solid fa-camera-rotate"></i>
+      </button>
+
+      <button class="ctrl" *ngIf="isConnected" (click)="shareScreen()">
+        <i class="fa-solid fa-display"></i>
+      </button>
+
+      <!-- CANCEL CALL (When calling...) -->
+      <button class="ctrl cancel" *ngIf="isRinging && !incomingCall" (click)="cancelCall()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- END CALL -->
+      <button class="ctrl end" (click)="endCall()">
+        <i class="fa-solid fa-phone-slash"></i>
+      </button>
+    </div>
+
+    <!-- DIALER -->
+    <div class="dialer" *ngIf="!isConnected && !isRinging && !incomingCall">
+      <input 
+        type="text" 
+        [(ngModel)]="peerIdShare"
+        placeholder="Enter Peer ID"
+      />
+      <button class="btn call" (click)="connectWithPeer()" [disabled]="!peerIdShare">
+        <i class="fa-solid fa-phone"></i> Call
+      </button>
+    </div>
+
+  </div>
+
+</div>
