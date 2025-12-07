@@ -3,7 +3,14 @@
   <!-- HEADER -->
   <header class="vc-header" *ngIf="!isConnected && !incomingCall && !isRinging">
     <h2>Video Call</h2>
-    <p class="self-id">Your ID: <strong>{{ peerId || 'Loading...' }}</strong></p>
+    <p class="self-id">
+      Your ID:
+      <strong id="peer-id-text">{{ peerId || 'Loading...' }}</strong>
+    
+      <i *ngIf="peerId" class="fa-solid fa-copy copy-icon" (click)="copyPeerId()"></i>
+      <strong *ngIf="copied" id="peer-id-text">{{' Copied!' }}</strong>
+
+    </p>
   </header>
 
 <!-- INCOMING CALL -->

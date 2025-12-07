@@ -15,7 +15,8 @@ export class WebrtcComponent implements OnInit, OnDestroy {
   private localStream: MediaStream;
   currentPeer: RTCPeerConnection;
   private peerList: Array<any> = [];
-  
+  copied: boolean = false
+
   // For UI state management
   isConnected: boolean = false;
   isCalling: boolean = false;
@@ -23,22 +24,22 @@ export class WebrtcComponent implements OnInit, OnDestroy {
   incomingCall: boolean = false;
   incomingCallPeerId: string = '';
   currentCall: any = null;
-  
+
   // Video states
   isVideoZoomed: boolean = false;
   isFrontCamera: boolean = true;
   localVideoEnabled: boolean = true;
   audioEnabled: boolean = true;
-  
+
   // Call status and messages
   callStatus: string = '';
   showCallEndedModal: boolean = false;
   callEndedMessage: string = '';
-  
+
   // Audio for ringing
   private ringtone: HTMLAudioElement;
   private ringbackTone: HTMLAudioElement;
-  
+
   // Timeout references
   private callTimeout: any;
   private incomingCallTimeout: any;
@@ -65,7 +66,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
   private initializeAudio(): void {
     this.ringtone = new Audio();
     this.ringtone.loop = true;
-    
+
     this.ringbackTone = new Audio();
     this.ringbackTone.loop = true;
   }
@@ -88,13 +89,13 @@ export class WebrtcComponent implements OnInit, OnDestroy {
 
     this.peer.on('call', (call) => {
       console.log('Incoming call from:', call.peer);
-      
+
       this.incomingCall = true;
       this.incomingCallPeerId = call.peer;
       this.currentCall = call;
-      
+
       this.playRingtone();
-      
+
       this.incomingCallTimeout = setTimeout(() => {
         if (this.incomingCall) {
           this.declineCall();
@@ -139,7 +140,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
   private showCallEndedMessage(message: string): void {
     this.callEndedMessage = message;
     this.showCallEndedModal = true;
-    
+
     setTimeout(() => {
       this.showCallEndedModal = false;
     }, 3000);
@@ -147,22 +148,22 @@ export class WebrtcComponent implements OnInit, OnDestroy {
 
   public async acceptCall(): Promise<void> {
     if (!this.currentCall) return;
-    
+
     this.stopRingtone();
     this.incomingCall = false;
     this.isRinging = false;
-    
+
     if (this.incomingCallTimeout) {
       clearTimeout(this.incomingCallTimeout);
     }
-    
+
     try {
       const stream = await this.getFullHDVideoStream(this.isFrontCamera);
       this.localStream = stream;
       this.setLocalVideoStream(stream);
 
       this.currentCall.answer(stream);
-      
+
       this.currentCall.on('stream', (remoteStream) => {
         console.log('Received remote stream from:', this.currentCall.peer);
         if (!this.peerList.includes(this.currentCall.peer)) {
@@ -197,14 +198,14 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     this.stopRingtone();
     this.incomingCall = false;
     this.isRinging = false;
-    
+
     if (this.currentCall) {
       this.currentCall.close();
     }
-    
+
     this.currentCall = null;
     this.incomingCallPeerId = '';
-    
+
     if (this.incomingCallTimeout) {
       clearTimeout(this.incomingCallTimeout);
     }
@@ -214,13 +215,13 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     this.stopRingbackTone();
     this.isCalling = false;
     this.isRinging = false;
-    
+
     if (this.currentCall) {
       this.currentCall.close();
     }
-    
+
     this.currentCall = null;
-    
+
     if (this.callTimeout) {
       clearTimeout(this.callTimeout);
     }
@@ -236,7 +237,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     this.isRinging = true;
     this.callStatus = 'Ringing...';
     this.playRingbackTone();
-    
+
     try {
       const stream = await this.getFullHDVideoStream(this.isFrontCamera);
       this.localStream = stream;
@@ -244,7 +245,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
 
       const call = this.peer.call(id, stream);
       this.currentCall = call;
-      
+
       this.callTimeout = setTimeout(() => {
         if (this.isRinging && !this.isConnected) {
           this.handleCallNotAnswered('No answer - user may be unavailable');
@@ -263,7 +264,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
           this.isRinging = false;
           this.callStatus = 'Connected';
         }
-        
+
         if (this.callTimeout) {
           clearTimeout(this.callTimeout);
         }
@@ -288,7 +289,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
         } else {
           this.cleanupCall();
         }
-        
+
         if (this.callTimeout) {
           clearTimeout(this.callTimeout);
         }
@@ -310,7 +311,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
         width: { ideal: 1920, min: 1280 },
         height: { ideal: 1080, min: 720 },
         frameRate: { ideal: 30, min: 60 },
-        aspectRatio: { ideal: 16/9 }
+        aspectRatio: { ideal: 16 / 9 }
       },
       audio: {
         echoCancellation: true,
@@ -328,7 +329,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
       return await navigator.mediaDevices.getUserMedia(constraints);
     } catch (err) {
       console.warn('Full HD not available, trying HD...', err);
-      
+
       // Fallback to HD
       const hdConstraints = {
         video: {
@@ -336,8 +337,8 @@ export class WebrtcComponent implements OnInit, OnDestroy {
           width: { ideal: 1920, max: 1920 },
           height: { ideal: 1080, max: 1080 },
           frameRate: { ideal: 30, max: 60 },
-          aspectRatio: 16/9
-      },
+          aspectRatio: 16 / 9
+        },
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
@@ -349,7 +350,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
         return await navigator.mediaDevices.getUserMedia(hdConstraints);
       } catch (err2) {
         console.warn('HD not available, trying basic...', err2);
-        
+
         // Final fallback to basic quality
         const basicConstraints = {
           video: {
@@ -371,31 +372,31 @@ export class WebrtcComponent implements OnInit, OnDestroy {
       track.stop();
       this.localStream.removeTrack(track);
     });
-    
+
     this.isFrontCamera = !this.isFrontCamera;
-    
+
     try {
       const newStream = await this.getFullHDVideoStream(this.isFrontCamera);
       const newVideoTrack = newStream.getVideoTracks()[0];
-      
+
       // Add new video track to existing stream
       this.localStream.addTrack(newVideoTrack);
-      
+
       // Update local video display
       this.setLocalVideoStream(this.localStream);
-      
+
       // Replace track in peer connection if connected
       if (this.currentPeer && this.isConnected) {
-        const sender = this.currentPeer.getSenders().find((s: any) => 
+        const sender = this.currentPeer.getSenders().find((s: any) =>
           s.track && s.track.kind === 'video'
         );
         if (sender) {
           await sender.replaceTrack(newVideoTrack);
         }
       }
-      
+
       console.log('Camera flipped to:', this.isFrontCamera ? 'front' : 'back');
-      
+
     } catch (err) {
       console.error('Error flipping camera:', err);
       // Revert camera state if flip fails
@@ -408,7 +409,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
 
     this.localVideoEnabled = !this.localVideoEnabled;
     const videoTrack = this.localStream.getVideoTracks()[0];
-    
+
     if (videoTrack) {
       videoTrack.enabled = this.localVideoEnabled;
     }
@@ -419,7 +420,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
 
     this.audioEnabled = !this.audioEnabled;
     const audioTracks = this.localStream.getAudioTracks();
-    
+
     audioTracks.forEach(track => {
       track.enabled = this.audioEnabled;
     });
@@ -434,7 +435,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     if (localVideo) {
       localVideo.srcObject = stream;
       localVideo.muted = true;
-      
+
       // Set video quality attributes
       localVideo.playsInline = true;
       localVideo.setAttribute('playsinline', 'true');
@@ -445,7 +446,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     const remoteVideo = document.getElementById('remote-video') as HTMLVideoElement;
     if (remoteVideo) {
       remoteVideo.srcObject = stream;
-      
+
       // Set video quality attributes
       remoteVideo.playsInline = true;
       remoteVideo.setAttribute('playsinline', 'true');
@@ -457,17 +458,17 @@ export class WebrtcComponent implements OnInit, OnDestroy {
       const audioContext = new AudioContext();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-      
+
       gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      
+
       oscillator.start();
-      
+
       this.ringtone = oscillator as any;
     } catch (e) {
       console.log('Audio context not supported');
@@ -490,23 +491,38 @@ export class WebrtcComponent implements OnInit, OnDestroy {
       const audioContext = new AudioContext();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-      
+
       gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
       gainNode.gain.setValueAtTime(0, audioContext.currentTime + 0.4);
-      
+
       oscillator.start();
-      
+
       this.ringbackTone = oscillator as any;
     } catch (e) {
       console.log('Audio context not supported');
     }
   }
+
+  copyPeerId() {
+    if (!this.peerId) return;
+
+    navigator.clipboard.writeText(this.peerId)
+      .then(() => {
+        this.copied = true
+        setTimeout(() => {
+          this.copied = false
+        }, 1000);
+        console.log("Copied!");
+      })
+      .catch(err => console.error(err));
+  }
+
 
   private stopRingbackTone(): void {
     if (this.ringbackTone) {
@@ -537,7 +553,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
       };
 
       if (this.currentPeer) {
-        const sender = this.currentPeer.getSenders().find((s: any) => 
+        const sender = this.currentPeer.getSenders().find((s: any) =>
           s.track && s.track.kind === 'video'
         );
         if (sender) {
@@ -553,7 +569,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     if (this.localStream) {
       const videoTrack = this.localStream.getVideoTracks()[0];
       if (this.currentPeer) {
-        const sender = this.currentPeer.getSenders().find((s: any) => 
+        const sender = this.currentPeer.getSenders().find((s: any) =>
           s.track && s.track.kind === 'video'
         );
         if (sender && videoTrack) {
@@ -570,14 +586,14 @@ export class WebrtcComponent implements OnInit, OnDestroy {
   public endCall(): void {
     this.stopRingtone();
     this.stopRingbackTone();
-    
+
     if (this.currentCall) {
       this.currentCall.close();
     }
-    
+
     this.cleanupCall();
     this.showCallEndedMessage('Call ended');
-    
+
     this.peer.destroy();
     this.peer = new Peer();
     this.getPeerId();
@@ -587,13 +603,13 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     if (this.localStream) {
       this.localStream.getTracks().forEach(track => track.stop());
     }
-    
+
     const localVideo = document.getElementById('local-video') as HTMLVideoElement;
     const remoteVideo = document.getElementById('remote-video') as HTMLVideoElement;
-    
+
     if (localVideo) localVideo.srcObject = null;
     if (remoteVideo) remoteVideo.srcObject = null;
-    
+
     this.isConnected = false;
     this.isCalling = false;
     this.isRinging = false;
@@ -607,7 +623,7 @@ export class WebrtcComponent implements OnInit, OnDestroy {
     this.localVideoEnabled = true;
     this.audioEnabled = true;
     this.isFrontCamera = true;
-    
+
     if (this.callTimeout) {
       clearTimeout(this.callTimeout);
     }
