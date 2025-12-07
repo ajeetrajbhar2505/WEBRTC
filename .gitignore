@@ -1,46 +1,19 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
-# Node
-backend/node_modules
-backend/.env
-frontend/node_modules
-frontend/dist
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
+# Other files and folders
 .settings/
-*.sublime-workspace
 
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-
-# System files
-.DS_Store
-Thumbs.db
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
 node_modules
